@@ -20,7 +20,7 @@ final public class HydraDecoding {
 	/// - Returns:
 	///    An `Array` of the given objectType.
 	///
-	static func convertJSONStringList< objectType : Codable >( _ objects : [ String ] ) throws -> [ objectType ] {
+	static public func convertJSONStringList< objectType : Codable >( _ objects : [ String ] ) throws -> [ objectType ] {
 		
 		var returnData : [ objectType ] = []
 		
@@ -55,7 +55,7 @@ final public class HydraDecoding {
 	/// - Returns:
 	///    An `Array` of the given objectType.
 	///
-	static func convertJSONDataList< objectType : Codable >( _ objects : [ Data ] ) throws -> [ objectType ] {
+	static public func convertJSONDataList< objectType : Codable >( _ objects : [ Data ] ) throws -> [ objectType ] {
 		
 		var returnData : [ objectType ] = []
 		
@@ -86,7 +86,7 @@ final public class HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Strings`.
 	///
-	static func convertToJSONStringList< objectType : Codable >( _ objects : [ objectType ] ) -> [ String ] {
+	static public func convertToJSONStringList< objectType : Codable >( _ objects : [ objectType ] ) -> [ String ] {
 		
 		var returnData : [ String ] = []
 		
@@ -110,7 +110,7 @@ final public class HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Data` objects.
 	///
-	static func convertToJSONDataList< objectType : Codable >( _ objects : [ objectType ] ) -> [ Data ] {
+	static public func convertToJSONDataList< objectType : Codable >( _ objects : [ objectType ] ) -> [ Data ] {
 		
 		var returnData : [ Data ] = []
 		
@@ -134,7 +134,7 @@ final public class HydraDecoding {
 	/// - Returns:
 	///   An `Array` of the given objectType.
 	///
-	static func convertJSONStringDict< objectType : Codable >( _ dict : NSDictionary ) throws -> [ objectType ] {
+	static public func convertJSONStringDict< objectType : Codable >( _ dict : NSDictionary ) throws -> [ objectType ] {
 		
 		var returnData : [ objectType ] = []
 		
@@ -165,7 +165,7 @@ final public class HydraDecoding {
 	///  - Returns:
 	///    The given `objectType` or `nil`
 	///
-	static func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType? {
+	static public func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType? {
 		
 		do {
 			let data = try JSONDecoder().decode( objectType.self, from: object )
@@ -187,7 +187,7 @@ final public class HydraDecoding {
 	///  - Returns:
 	///    The given `objectType` or `nil`
 	///
-	static func convertJSONString< objectType : Codable >( _ object : String ) throws -> objectType? {
+	static public func convertJSONString< objectType : Codable >( _ object : String ) throws -> objectType? {
 		
 		do {
 			let objectData = object.data( using: .utf8 ) ?? Data()
