@@ -12,7 +12,7 @@ import UIKit
 
 extension UIImage {
 	
-	func cropImageToSquare() -> UIImage? {
+	public func cropImageToSquare() -> UIImage? {
 		
 		var imageHeight = self.size.height
 		var imageWidth = self.size.width

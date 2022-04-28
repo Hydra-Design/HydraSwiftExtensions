@@ -19,7 +19,7 @@ extension Encodable {
 	}
 	
 	/// Returns An `Optional Data` object containing the JSON Encoded version of this object or nil.
-	var jsonData : Data? {
+	public var jsonData : Data? {
 		
 		if let returnData = try? jsonEncodeAsData() { return returnData }
 		
