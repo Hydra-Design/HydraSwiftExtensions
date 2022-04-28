@@ -11,7 +11,7 @@ import Foundation
 extension Encodable {
 	
 	/// Returns An `Optional String` object containing the JSON Encoded version of this object or nil.
-	var jsonString : String? {
+	public var jsonString : String? {
 		
 		if let returnData = try? jsonEncodeAsString() { return returnData }
 		
@@ -19,7 +19,7 @@ extension Encodable {
 	}
 	
 	/// Returns An `Optional Data` object containing the JSON Encoded version of this object or nil.
-	var jsonData : Data? {
+	public var jsonData : Data? {
 		
 		if let returnData = try? jsonEncodeAsData() { return returnData }
 		
@@ -32,7 +32,7 @@ extension Encodable {
 	///
 	/// - Returns: The created `Data` object.
 	///
-	func jsonEncodeAsData() throws -> Data {
+	public func jsonEncodeAsData() throws -> Data {
 		
 		do {
 			
@@ -51,7 +51,7 @@ extension Encodable {
 	///
 	/// - Returns: The created `String`
 	///
-	func jsonEncodeAsString() throws -> String {
+	public func jsonEncodeAsString() throws -> String {
 		
 		do {
 			let jsonData = try JSONEncoder().encode( self )
