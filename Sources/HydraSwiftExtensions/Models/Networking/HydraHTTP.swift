@@ -18,7 +18,7 @@ final public struct HydraHTTP {
     ///
     /// - Returns : The given `Codable` objectType created from the given `URL`s `Data`.
     ///
-    static func getObjectFromUrl< objectType : Codable >( _ url : URL ) async throws -> objectType {
+    static public func getObjectFromUrl< objectType : Codable >( _ url : URL ) async throws -> objectType {
 
         do {
             let ( data, _ ) = try await URLSession.shared.data( from: url )
