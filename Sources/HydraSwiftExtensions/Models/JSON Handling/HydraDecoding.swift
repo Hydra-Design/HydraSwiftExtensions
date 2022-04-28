@@ -167,15 +167,14 @@ final public class HydraDecoding {
 	///  - Returns:
 	///    The given `objectType` or `nil`
 	///
-	static public func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType? {
+	static public func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType {
 		
 		do {
 			let data = try JSONDecoder().decode( objectType.self, from: object )
 			
 			return data
-		} catch( let error ) { print( error ) }
-		
-		return nil
+            
+		} catch( let error ) { throw error }
 	}
 	
 	/// Converts a `String` object into the given `objectType`.
@@ -189,7 +188,7 @@ final public class HydraDecoding {
 	///  - Returns:
 	///    The given `objectType` or `nil`
 	///
-	static public func convertJSONString< objectType : Codable >( _ object : String ) throws -> objectType? {
+	static public func convertJSONString< objectType : Codable >( _ object : String ) throws -> objectType {
 		
 		do {
 			let objectData = object.data( using: .utf8 ) ?? Data()
@@ -197,8 +196,7 @@ final public class HydraDecoding {
 			let data = try JSONDecoder().decode( objectType.self, from: objectData )
 			
 			return data
-		} catch( let error ) { print( error ) }
-		
-		return nil
+            
+		} catch( let error ) { throw error }
 	}
 }
