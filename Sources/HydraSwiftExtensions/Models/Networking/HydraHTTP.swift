@@ -1,13 +1,14 @@
 //
-//  File.swift
-//  
+//  HydraHTTP.swift
+//  HydraSwiftExtensions
 //
 //  Created by Lukas Simonson on 4/28/22.
 //
 
 import Foundation
 
-final public struct HydraHTTP {
+@available(iOS 15.0, *)
+public struct HydraHTTP {
     
     /// Takes a `URL` and retrieves a `Data` object and converts it to the given `Codable` objectType.
     ///
