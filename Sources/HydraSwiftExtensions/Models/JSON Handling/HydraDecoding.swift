@@ -155,7 +155,6 @@ final public class HydraDecoding {
 		return returnData
 	}
 	
-	
 	/// Converts a `Data` object into the given `objectType`.
 	///
 	///  - Parameters:
@@ -165,7 +164,7 @@ final public class HydraDecoding {
 	///    1.0
 	///
 	///  - Returns:
-	///    The given `objectType` or `nil`
+	///    The given `objectType`
 	///
 	static public func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType {
 		
@@ -199,4 +198,28 @@ final public class HydraDecoding {
             
 		} catch( let error ) { throw error }
 	}
+    
+    /// Takes a Filename and retrieves the `JSON` `Data` within the file. Then returns the given objectType.
+    ///
+    /// - Parameters:
+    ///   - object: A `Data` object to convert.
+    ///
+    /// - Version:
+    ///   1.0
+    ///
+    /// - Returns:
+    ///   The given `objectType`
+    ///
+    static public func loadAndConvertJSONFile< objectType : Codable >( filename: String ) throws -> objectType {
+        
+        if let url = Bundle.main.url( forResource: filename, withExtension: "json" ) {
+            
+            do {
+                let data = try Data(contentsOf: url)
+                let returnData = try JSONDecoder().decode(objectType.self, from: data)
+                return returnData
+            }
+            catch ( let error ) { throw error }
+        }
+    }
 }
