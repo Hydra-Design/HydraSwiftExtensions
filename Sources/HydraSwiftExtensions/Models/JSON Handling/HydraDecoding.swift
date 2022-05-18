@@ -221,5 +221,12 @@ final public class HydraDecoding {
             }
             catch ( let error ) { throw error }
         }
+        else {
+            throw HydraSwiftExtensionsError.couldntFindFileNamed(name: filename)
+        }
     }
+}
+
+enum HydraSwiftExtensionsError : Error {
+    case couldntFindFileNamed( name: String )
 }
