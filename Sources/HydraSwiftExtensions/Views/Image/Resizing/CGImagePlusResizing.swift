@@ -35,6 +35,7 @@ extension CGImage {
 	/// - Parameter maxPixels: Max pixels in the output image. If input image pixel count is less than maxPixels value then it won'n be risezed.
 	/// - Parameter resizeTechnique: Technique for image resizing: UIKit / CoreImage / CoreGraphics / ImageIO / Accelerate.
 	/// - Returns: Resized image.
+    /// 
 	public func resize(maxPixels: Int,
 					   with resizeTechnique: ResizeTechnique) throws -> CGImage {
 		let pixelCount = self.width
@@ -55,6 +56,7 @@ extension CGImage {
 	/// - Parameter newSize: Size of the image output.
 	/// - Parameter resizeTechnique: Technique for image resizing: UIKit / CoreImage / CoreGraphics / ImageIO / Accelerate.
 	/// - Returns: Resized image.
+    ///
 	public func resized(to newSize: CGSize,
 						with resizeTechnique: ResizeTechnique) throws -> CGImage {
 		switch resizeTechnique {

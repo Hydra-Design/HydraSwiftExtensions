@@ -10,6 +10,9 @@ import Foundation
 extension Dictionary where Key == String, Value == Any {
     
     /// Creates a `Dictionary<String, Any>` that represents the given object.
+    ///
+    /// - Version: Beta 0.1
+    ///
     init( reflecting object : Any ) {
         
         let mirror = Mirror(reflecting: object)

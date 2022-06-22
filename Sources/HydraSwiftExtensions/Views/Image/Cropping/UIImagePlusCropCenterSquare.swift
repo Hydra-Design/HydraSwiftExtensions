@@ -15,6 +15,7 @@ extension UIImage {
     /// Crops the UIImage into a Square, cutting off excess in either the width or height.
     ///
     /// - Version: Beta 0.1
+    ///
     @available( *, deprecated, message: "Can cause Crashes", renamed: "cropImageToSquare()" )
 	public func cropImageToSquare() -> UIImage? {
 		
@@ -44,6 +45,7 @@ extension UIImage {
     /// Crops the UIImage into a Square, cutting off excess in either the width or height.
     ///
     /// - Version: Beta 0.2
+    /// 
     public func cropImageToSquare() throws -> UIImage {
         
         var imageHeight = self.size.height
@@ -66,16 +68,17 @@ extension UIImage {
             if let imageRef = CGImage.cropping( to: cropRect ) {
                 return UIImage( cgImage: imageRef, scale: 0, orientation: self.imageOrientation )
             } else {
-                throw
+                throw HSEUIImageError.couldntCropImage
             }
         } else {
-            throw
+            throw HSEUIImageError.couldntAccessCGImage
         }
     }
     
     
-    enum HSWUIImageError : Error {
+    enum HSEUIImageError : Error {
         case couldntAccessCGImage
+        case couldntCropImage
     }
 }
 #endif

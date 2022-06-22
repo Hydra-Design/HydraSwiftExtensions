@@ -18,6 +18,7 @@ extension Color {
 	///    - hex: The hex color code string to parse into a Color
 	///
 	/// - Version: Beta 0.1
+    /// 
 	public init( hex: String ) {
 		
 		let scanner = Scanner(string: hex)
