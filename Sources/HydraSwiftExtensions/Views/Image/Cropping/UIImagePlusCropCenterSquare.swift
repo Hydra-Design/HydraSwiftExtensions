@@ -74,11 +74,11 @@ extension UIImage {
             throw HSEUIImageError.couldntAccessCGImage
         }
     }
-    
-    
-    enum HSEUIImageError : Error {
-        case couldntAccessCGImage
-        case couldntCropImage
-    }
 }
+
+enum HSEUIImageError : Error {
+    case couldntAccessCGImage
+    case couldntCropImage
+}
+
 #endif

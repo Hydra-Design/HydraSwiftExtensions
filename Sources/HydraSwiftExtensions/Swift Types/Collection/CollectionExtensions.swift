@@ -8,6 +8,8 @@
 
 import Foundation
 
+@available(macOS 10.15, *)
+@available( iOS 13.0, * )
 extension Collection where Element: Identifiable {
     
     /// Gets the index of the first item matching the given item.
@@ -20,6 +22,8 @@ extension Collection where Element: Identifiable {
     }
 }
 
+@available(macOS 10.15, *)
+@available( iOS 13.0, * )
 extension RangeReplaceableCollection where Element: Identifiable {
     
     /// Removes the given item from this `Array`
