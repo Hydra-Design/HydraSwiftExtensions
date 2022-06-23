@@ -1,3 +1,3 @@
 # HydraSwiftExtensions
 
-A description of this package.
+HydraSwiftExtensions is a Collecion of extensions to the Swift Programming Language.
