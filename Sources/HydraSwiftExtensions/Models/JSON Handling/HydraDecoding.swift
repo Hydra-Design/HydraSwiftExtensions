@@ -229,4 +229,5 @@ final public class HydraDecoding {
 
 enum HydraSwiftExtensionsError : Error {
     case couldntFindFileNamed( name: String )
+    case couldntCreateCGColor
 }
