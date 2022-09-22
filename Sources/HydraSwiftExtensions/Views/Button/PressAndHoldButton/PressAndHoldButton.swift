@@ -61,7 +61,7 @@ public struct PressAndHoldButton< Content: View >: View {
 
 @available(iOS 13.0, *)
 @available(macOS 11, *)
-struct OnPressAndHold: ViewModifier {
+fileprivate struct OnPressAndHold: ViewModifier {
     
     @State private var isLongPressing: Bool = false
     @State private var timer: Timer? = nil
@@ -112,7 +112,7 @@ struct OnPressAndHold: ViewModifier {
 @available(macOS 11, *)
 extension View {
     
-    func onPressAndHold(
+    public func onPressAndHold(
         delayBetweenActivation delay: Double = 0.25,
         _ action: @escaping () -> Void,
         tapAction: (() -> Void)? = nil
