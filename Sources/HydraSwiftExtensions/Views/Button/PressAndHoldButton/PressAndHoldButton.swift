@@ -110,7 +110,7 @@ fileprivate struct OnPressAndHold: ViewModifier {
 
 @available(iOS 13.0, *)
 @available(macOS 11, *)
-extension View {
+public extension View {
     
     public func onPressAndHold(
         delayBetweenActivation delay: Double = 0.25,
