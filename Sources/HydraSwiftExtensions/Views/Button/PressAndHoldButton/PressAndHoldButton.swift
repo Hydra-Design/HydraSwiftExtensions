@@ -61,6 +61,72 @@ public struct PressAndHoldButton< Content: View >: View {
 
 @available(iOS 13.0, *)
 @available(macOS 11, *)
+struct OnPressAndHold: ViewModifier {
+    
+    @State private var isLongPressing: Bool = false
+    @State private var timer: Timer? = nil
+    
+    private var tapAction: () -> Void
+    private var holdAction: () -> Void
+    
+    private var delayBetweenActivation = 0.25
+    
+    public init( delayBetweenActivation delay: Double = 0.25, action: @escaping () -> Void ) {
+        self.delayBetweenActivation = delay
+        self.tapAction = action
+        self.holdAction = action
+    }
+    
+    public init(
+        delayBetweenActivation delay: Double = 0.25,
+        onTap: @escaping () -> Void,
+        onHold: @escaping () -> Void
+    ) {
+        self.delayBetweenActivation = delay
+        self.tapAction = onTap
+        self.holdAction = onHold
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .onTapGesture {
+                if self.isLongPressing {
+                    self.isLongPressing.toggle()
+                    self.timer?.invalidate()
+                } else {
+                    tapAction()
+                }
+            }
+            .simultaneousGesture(
+                AnyGesture<Any>.holdGesture(
+                    delayBetweenActivations: delayBetweenActivation,
+                    isLongPressing: $isLongPressing,
+                    timer: $timer,
+                    action: holdAction
+                )
+            )
+    }
+}
+
+@available(iOS 13.0, *)
+@available(macOS 11, *)
+extension View {
+    
+    func onPressAndHold(
+        delayBetweenActivation delay: Double = 0.25,
+        _ action: @escaping () -> Void,
+        tapAction: (() -> Void)? = nil
+    ) -> some View {
+        if let tapAction = tapAction {
+            return modifier(OnPressAndHold(delayBetweenActivation: delay, onTap: tapAction, onHold: action))
+        } else {
+            return modifier(OnPressAndHold(delayBetweenActivation: delay, action: action))
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+@available(macOS 11, *)
 fileprivate extension Gesture {
     
     static func holdGesture(
