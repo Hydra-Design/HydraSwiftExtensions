@@ -19,13 +19,25 @@ public struct PressAndHoldButton< Content: View >: View {
     private var tapAction: () -> Void
     private var holdAction: () -> Void
     
-    public init( label: () -> Content, action: @escaping () -> Void ) {
+    private var delayBetweenActivation = 0.25
+    
+    public init (
+        label: () -> Content,
+        delayBetweenActivation delay: Double = 0.25,
+        action: @escaping () -> Void
+    ) {
         self.label = label()
         self.tapAction = action
         self.holdAction = action
+        self.delayBetweenActivation = delay
     }
     
-    public init( label: () -> Content, onTap: @escaping () -> Void, onHold: @escaping () -> Void ) {
+    public init (
+        label: () -> Content,
+        delayBetweenActivation delay: Double = 0.25,
+        onTap: @escaping () -> Void,
+        onHold: @escaping () -> Void
+    ) {
         self.label = label()
         self.tapAction = onTap
         self.holdAction = onHold
@@ -43,16 +55,26 @@ public struct PressAndHoldButton< Content: View >: View {
         } label: {
             label
         }
-        .simultaneousGesture(holdGesture)
+        .simultaneousGesture( AnyGesture<Any>.holdGesture(delayBetweenActivations: delayBetweenActivation, isLongPressing: $isLongPressing, timer: $timer, action: holdAction) )
     }
+}
+
+@available(iOS 13.0, *)
+@available(macOS 11, *)
+fileprivate extension Gesture {
     
-    private var holdGesture: some Gesture {
+    static func holdGesture(
+        delayBetweenActivations delay: Double,
+        isLongPressing: Binding< Bool >,
+        timer: Binding< Timer? >,
+        action: @escaping () -> Void
+    ) -> some Gesture {
         LongPressGesture( minimumDuration: 0.1 )
             .onEnded { _ in
-                holdAction()
-                self.isLongPressing = true
-                self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { _ in
-                    holdAction()
+                action()
+                isLongPressing.wrappedValue = true
+                timer.wrappedValue = Timer.scheduledTimer(withTimeInterval: delay, repeats: true, block: { _ in
+                    action()
                 })
             }
     }
