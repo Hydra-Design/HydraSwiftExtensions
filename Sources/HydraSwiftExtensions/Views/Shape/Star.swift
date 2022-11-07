@@ -9,13 +9,18 @@ import SwiftUI
 
 @available(macOS 10.15, *)
 @available(iOS 13.0, *)
-struct Star: Shape {
+public struct Star: Shape {
     
     // store how many corners the star has, and how smooth/pointed it is
     let corners: Int
     let smoothness: CGFloat
     
-    func path(in rect: CGRect) -> Path {
+    public init(corners: Int, smoothness: CGFloat) {
+        self.corners = corners
+        self.smoothness = smoothness
+    }
+    
+    public func path(in rect: CGRect) -> Path {
         // ensure we have at least two corners, otherwise send back an empty path
         guard corners >= 2 else { return Path() }
         

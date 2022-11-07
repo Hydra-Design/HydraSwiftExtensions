@@ -8,7 +8,7 @@
 import Foundation
 
 @available(iOS 15.0, macOS 12.0, *)
-public struct HydraHTTP {
+public enum HydraHTTP {
     
     /// Takes a `URL` and retrieves a `Data` object and converts it to the given `Codable` objectType.
     ///

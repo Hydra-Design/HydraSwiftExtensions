@@ -7,9 +7,9 @@
 
 import Foundation
 
-final public class HydraDecoding {
+public enum HydraDecoding {
     
-    public init() {}
+    //public init() {}
 	
 	/// Converts an `Array` of JSON `Strings` to an `Array` of the given objectType.
 	///
