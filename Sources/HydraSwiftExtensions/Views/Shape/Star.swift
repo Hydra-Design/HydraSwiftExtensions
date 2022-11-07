@@ -8,6 +8,7 @@
 import SwiftUI
 
 @available(macOS 10.15, *)
+@available(iOS 13.0, *)
 struct Star: Shape {
     
     // store how many corners the star has, and how smooth/pointed it is
