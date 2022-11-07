@@ -41,7 +41,7 @@ public extension RangeReplaceableCollection where Element: Equatable {
         }
         set {
             for indicy in self.indicies(matching: element) {
-                replaceSubrange(indicy...indicy, with: [element])
+                replaceSubrange(indicy...indicy, with: newValue)
             }
         }
     }
