@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Dictionary where Key == String, Value == Any {
+public extension Dictionary where Key == String, Value == Any {
     
     /// Creates a `Dictionary<String, Any>` that represents the given object.
     ///

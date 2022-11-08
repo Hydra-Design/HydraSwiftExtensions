@@ -7,24 +7,41 @@
 
 import Foundation
 
-extension Array where Element : Equatable {
+public extension Array where Element : Equatable {
     
-    /// Removes duplicate items from this `Array`
+    /// Returns this `Array` with all duplicate items removed.
     ///
-    /// - Returns: An `Array` of all the objects removed from the given `Array`
-    /// - Version: Beta 0.1
-    @discardableResult
-    mutating func cleaned() -> Array< Element > {
+    /// - Returns: An `Array` with only unique items.
+    /// - Version: Beta 0.2
+    func cleaned() -> [Element] {
         
-        var cleanedArray = Array< Element >()
-        var dirtyItems = Array< Element >()
+        var cleanArray = [Element]()
         
         self.forEach { item in
-            if !cleanedArray.contains( item ) {
-                cleanedArray.append( item )
+            if !cleanArray.contains( item ) {
+                cleanArray.append( item )
+            }
+        }
+        return cleanArray
+    }
+    
+    /// Removes duplicate items from this `Array`.
+    ///
+    /// - Returns: An `Array` of all the objects removed from the given `Array`.
+    /// - Version: Beta 0.2
+    @discardableResult
+    mutating func clean() -> [Element] {
+        
+        var cleanArray = [Element]()
+        var dirtyItems = [Element]()
+        
+        self.forEach { item in
+            if !cleanArray.contains( item ) {
+                cleanArray.append( item )
             } else { dirtyItems.append( item ) }
         }
-        self = cleanedArray
+        
+        self = cleanArray
         return dirtyItems
     }
 }

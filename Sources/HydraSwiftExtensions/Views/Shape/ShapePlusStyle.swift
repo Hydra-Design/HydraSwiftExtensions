@@ -9,7 +9,7 @@ import SwiftUI
 
 @available(macOS 10.15, *)
 @available(iOS 13.0, *)
-extension Shape {
+public extension Shape {
     
     /// Styles this `Shape` with the given stroke and fill.
     ///
