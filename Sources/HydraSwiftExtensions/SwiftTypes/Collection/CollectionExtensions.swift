@@ -10,7 +10,12 @@ import Foundation
 
 public extension Collection where Element: Equatable {
 
-    func indicies(matching element: Element) -> [ Self.Index ] {
+    /// Gets the indices of all items matching the given item.
+    ///
+    /// - Returns: An `Array` of matching items.
+    ///
+    /// - Version: 1.0
+    func indices(matching element: Element) -> [ Self.Index ] {
         var matchingIndicies = [Self.Index]()
         
         for index in self.indices {
@@ -25,24 +30,31 @@ public extension Collection where Element: Equatable {
 
 public extension RangeReplaceableCollection where Element: Equatable {
     
+    /// Removes all items that match the given item.
+    ///
+    /// - Version: 1.0
     mutating func removeMatching( _ element: Element ) {
-        for index in self.indicies(matching: element) {
+        for index in self.indices(matching: element) {
             remove(at: index)
+        }
+    }
+    
+    /// Replaces all items that match the first item with the second item.
+    ///
+    /// - Version: 1.0
+    mutating func replaceMatching( _ oldElement: Element, with newElement: Element ) {
+        for index in indices(matching: oldElement) {
+            replaceSubrange(index...index, with: [newElement])
         }
     }
     
     subscript( _ element: Element ) -> [Element] {
         get {
             var elements = [Element]()
-            for indicy in self.indicies(matching: element) {
+            for indicy in self.indices(matching: element) {
                 elements.append(self[indicy])
             }
             return elements
-        }
-        set {
-            for indicy in self.indicies(matching: element) {
-                replaceSubrange(indicy...indicy, with: newValue)
-            }
         }
     }
 }
