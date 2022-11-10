@@ -16,7 +16,7 @@ public extension Array where Element : Equatable {
     func cleaned() -> [Element] {
         
         var cleanArray = [Element]()
-        
+
         self.forEach { item in
             if !cleanArray.contains( item ) {
                 cleanArray.append( item )
