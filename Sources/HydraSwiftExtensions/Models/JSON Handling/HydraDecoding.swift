@@ -8,73 +8,39 @@
 import Foundation
 
 public enum HydraDecoding {
-    
-    //public init() {}
-	
-	/// Converts an `Array` of JSON `Strings` to an `Array` of the given objectType.
+    	
+	/// Converts an `Array` of JSON `Strings` to an `Array` of the given Object.
 	///
 	/// - Parameters:
-	///   - objects: An `Array` of JSON `Strings` to convert to an `Array` of objectType.
+	///   - objects: An `Array` of JSON `Strings` to convert to an `Array` of Object.
 	///
 	/// - Version:
 	///    1.0
 	///
 	/// - Returns:
-	///    An `Array` of the given objectType.
+	///    An `Array` of the given Object.
 	///
-	static public func convertJSONStringList< objectType : Codable >( _ objects : [ String ] ) throws -> [ objectType ] {
-		
-		var returnData : [ objectType ] = []
-		
-		do {
-			
-			try objects.forEach { item in
-				
-				// Converts the item from `String` to `Data`
-				let objectData = item.data( using: .utf8 ) ?? Data()
-				
-				// Converts the objectData value into the given objectType
-				let convertedData = try JSONDecoder().decode( objectType.self, from: objectData )
-				
-				returnData.append( convertedData )
-			}
-			
-		} catch ( let error ) {
-			throw error
-		}
-		
-		return returnData
+	static public func convertJSONStringList< Object : Codable >( _ jsonObjects : [ String ] ) throws -> [ Object ] {
+        return try jsonObjects.compactMap { jsonObj in
+            try Self.convertJSONString( jsonObj )
+        }
 	}
 	
-	/// Converts an `Array` of JSON `Data` objects to an `Array` of the given objectType.
+	/// Converts an `Array` of JSON `Data` objects to an `Array` of the given Object.
 	///
 	/// - Parameters:
-	///   - objects: An `Array` of JSON `Data` objects to convert to an `Array` of objectType.
+	///   - objects: An `Array` of JSON `Data` objects to convert to an `Array` of Object.
 	///
 	/// - Version:
 	///    1.0
 	///
 	/// - Returns:
-	///    An `Array` of the given objectType.
+	///    An `Array` of the given Object.
 	///
-	static public func convertJSONDataList< objectType : Codable >( _ objects : [ Data ] ) throws -> [ objectType ] {
-		
-		var returnData : [ objectType ] = []
-		
-		do {
-			
-			try objects.forEach { item in
-				
-				let convertedData = try JSONDecoder().decode( objectType.self, from: item )
-				
-				returnData.append( convertedData )
-			}
-			
-		} catch ( let error ) {
-			throw error
-		}
-		
-		return returnData
+	static public func convertJSONDataList< Object : Codable >( _ jsonObjects : [ Data ] ) throws -> [ Object ] {
+        return try jsonObjects.compactMap { jsonObj in
+            try Self.convertJSONData( jsonObj )
+        }
 	}
 	
 	/// Converts an `Array` of any `Codable` objects to an `Array` of JSON `Strings`.
@@ -88,17 +54,10 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Strings`.
 	///
-	static public func convertToJSONStringList< objectType : Codable >( _ objects : [ objectType ] ) -> [ String ] {
-		
-		var returnData : [ String ] = []
-		
-		objects.forEach { item in
-			
-			if let encodedData = item.jsonString { returnData.append( encodedData ) }
-			
-		}
-		
-		return returnData
+	static public func convertToJSONStringList< Object : Codable >( _ objects : [ Object ] ) -> [ String ] {
+        return objects.compactMap { obj in
+            obj.jsonString
+        }
 	}
 	
 	/// Converts an `Array` of any `Codable` objects to an `Array` of JSON `Data` objects.
@@ -112,17 +71,10 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Data` objects.
 	///
-	static public func convertToJSONDataList< objectType : Codable >( _ objects : [ objectType ] ) -> [ Data ] {
-		
-		var returnData : [ Data ] = []
-		
-		objects.forEach { item in
-			
-			if let encodedData = item.jsonData { returnData.append( encodedData ) }
-			
-		}
-		
-		return returnData
+	static public func convertToJSONDataList< Object : Codable >( _ objects : [ Object ] ) -> [ Data ] {
+        return objects.compactMap { obj in
+            obj.jsonData
+        }
 	}
 	
 	/// Converts a `NSDictionary` of (`Any?`, `String`) key value pairs, where value is a JSON `String`, to an `Array` of the given objectType.
@@ -136,23 +88,11 @@ public enum HydraDecoding {
 	/// - Returns:
 	///   An `Array` of the given objectType.
 	///
-	static public func convertJSONStringDict< objectType : Codable >( _ dict : NSDictionary ) throws -> [ objectType ] {
-		
-		var returnData : [ objectType ] = []
-		
-		for ( _, value ) in dict {
-			
-			do {
-				
-				if let stringData = value as? String,
-				   let convertedData : objectType = try HydraDecoding.convertJSONString( stringData ) {
-					returnData.append( convertedData )
-				}
-				
-			} catch ( let error ) { throw error }
-		}
-		
-		return returnData
+	static public func convertJSONStringDict< Object : Codable >( _ dict : NSDictionary ) throws -> [ Object ] {
+        return try dict.compactMap { ( _, value ) in
+            guard let strVal = value as? String else { throw HydraDecodingError.invalidDictionary }
+            return try Self.convertJSONString( strVal )
+        }
 	}
 	
 	/// Converts a `Data` object into the given `objectType`.
@@ -166,14 +106,8 @@ public enum HydraDecoding {
 	///  - Returns:
 	///    The given `objectType`
 	///
-	static public func convertJSONData< objectType : Codable >( _ object : Data ) throws -> objectType {
-		
-		do {
-			let data = try JSONDecoder().decode( objectType.self, from: object )
-			
-			return data
-            
-		} catch( let error ) { throw error }
+	static public func convertJSONData< Object : Codable >( _ objectData : Data ) throws -> Object {
+        try JSONDecoder().decode( Object.self, from: objectData )
 	}
 	
 	/// Converts a `String` object into the given `objectType`.
@@ -185,49 +119,35 @@ public enum HydraDecoding {
 	///    1.0
 	///
 	///  - Returns:
-	///    The given `objectType` or `nil`
+	///    The given `objectType`
 	///
-	static public func convertJSONString< objectType : Codable >( _ object : String ) throws -> objectType {
-		
-		do {
-			let objectData = object.data( using: .utf8 ) ?? Data()
-			
-			let data = try JSONDecoder().decode( objectType.self, from: objectData )
-			
-			return data
-            
-		} catch( let error ) { throw error }
+	static public func convertJSONString< Object : Codable >( _ objectStr : String ) throws -> Object {
+        let data = objectStr.data( using: .utf8 ) ?? Data()
+        return try JSONDecoder().decode( Object.self, from: data )
 	}
     
-    /// Takes a Filename and retrieves the `JSON` `Data` within the file. Then returns the given objectType.
+    /// Takes a Filename and retrieves the `JSON` `Data` within the file. Then returns the given Object.
     ///
     /// - Parameters:
-    ///   - object: A `Data` object to convert.
+    ///   - filename: The name of the Bundled JSON File.
     ///
     /// - Version:
     ///   1.0
     ///
     /// - Returns:
-    ///   The given `objectType`
+    ///   The given `Object`
     ///
-    static public func loadAndConvertJSONFile< objectType : Codable >( filename: String ) throws -> objectType {
+    static public func loadAndConvertBundledJSONFile< Object : Codable >( filename: String ) throws -> Object {
         
-        if let url = Bundle.main.url( forResource: filename, withExtension: "json" ) {
-            
-            do {
-                let data = try Data(contentsOf: url)
-                let returnData = try JSONDecoder().decode(objectType.self, from: data)
-                return returnData
-            }
-            catch ( let error ) { throw error }
-        }
-        else {
-            throw HydraSwiftExtensionsError.couldntFindFileNamed(name: filename)
-        }
+        guard let url = Bundle.main.url( forResource: filename, withExtension: "json" )
+        else { throw HydraDecodingError.couldntFindFileNamed( name: filename ) }
+        
+        let data = try Data(contentsOf: url)
+        return try Self.convertJSONData( data )
     }
 }
 
-enum HydraSwiftExtensionsError : Error {
+enum HydraDecodingError : Error {
+    case invalidDictionary
     case couldntFindFileNamed( name: String )
-    case couldntCreateCGColor
 }

@@ -12,8 +12,7 @@ import SwiftUI
 import UIKit
 #endif
 
-@available(iOS 14.0, *)
-@available(macOS 11, *)
+@available(iOS 14, macOS 11, *)
 extension Color {
     
     /// Creates a `SwiftUI.Color` object using a Hex Color Code.
@@ -72,7 +71,7 @@ extension Color {
         #endif
 
         guard let components = cgColor.components, components.count >= 3 else {
-            throw HydraSwiftExtensionsError.couldntCreateCGColor
+            throw HydraColorError.couldntCreateCGColor
         }
         
         let r = Float(components[0])
@@ -97,3 +96,6 @@ extension Color {
     }
 }
 
+enum HydraColorError: Error {
+    case couldntCreateCGColor
+}
