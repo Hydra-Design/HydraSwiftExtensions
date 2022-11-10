@@ -8,27 +8,33 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 13.0, *)
-@available(macOS 11, *)
-
 /// A Button that allows a User to hold it down and repeatedly do an action.
 ///
-/// You create a button by providing 1 - 2 action(s) and a label. The action(s) are
-/// either a method or closure property that does something when a Uesr clicks or holds
-/// the button. There is also a delayBetweenActivation property that allows you to control
-/// how often you want the action to happen while the user is holding the button down. The
-/// label is a View that describes the button's action --- for example, by showing text,
+/// You create a `Button View` by providing 1 - 2 action(s) and a label. The action(s) are
+/// either a method or closure property that does sometihng when a User clicks or holds the
+/// `Button View`. There is also a delayBetweenActivation property that allows the control
+/// of how often the action is to happen while the User is holding down the `Button View`.
+/// The label is a `View` that describes the button's action --- for example, by showing text,
 /// an icon, etc.
 ///
 /// There is a common use case of text-only labels, you can use the convenience init that
 /// takes a String or LocalizedStringKey as its first parameter, instead of a closure.
+@available(iOS 13.0, macOS 11, *)
 public struct PressAndHoldButton< Content: View >: View {
     
+    /// Handles the frequency of the holdAction calls.
     @State private var timer: Timer?
+    
+    /// Tracks if this button is being held down.
     @State public var isLongPressing: Bool = false
     
+    /// What view to display on the button.
     private var label: Content
+    
+    /// Called when the user taps the button.
     private var tapAction: () -> Void
+    
+    /// Called when the user holds down the button.
     private var holdAction: () -> Void
     
     /// Controls the delay between the call to `holdAction` while a User is holding down the button.
@@ -87,8 +93,7 @@ public struct PressAndHoldButton< Content: View >: View {
     }
 }
 
-@available(iOS 13.0, *)
-@available(macOS 11, *)
+@available(iOS 13.0, macOS 11, *)
 extension PressAndHoldButton where Content == Text {
     
     /// Creates a button that generates its label from a `LocalizedStringKey`.
@@ -99,7 +104,7 @@ extension PressAndHoldButton where Content == Text {
     /// - Parameters:
     ///   - titleKey: The key for the button's localized title, that describes
     ///   the purpose of the button's `action`.
-    ///   - delayBetweenActivation: Controls the dealy between the calls to the provided onHold action while the user is holding down the button.
+    ///   - delayBetweenActivation: Controls the delay between the calls to the provided onHold action while the user is holding down the button.
     ///   - action: An action to perform when then button is pressed, or repeated while the User holds down the button.
     public init(
         _ titleKey: LocalizedStringKey,
@@ -120,7 +125,7 @@ extension PressAndHoldButton where Content == Text {
     /// - Parameters:
     ///   - titleKey: The key for the button's localized title, that describes
     ///   the purpose of the button's `action`.
-    ///   - delayBetweenActivation: Controls the dealy between the calls to the provided onHold action while the user is holding down the button.
+    ///   - delayBetweenActivation: Controls the delay between the calls to the provided onHold action while the user is holding down the button.
     ///   - onTap: An action to perform when the button is tapped and not held.
     ///   - onHold: An action to repeatedly perform while the button is held down.
     public init (
@@ -143,7 +148,7 @@ extension PressAndHoldButton where Content == Text {
     /// - Parameters:
     ///   - titleKey: The key for the button's localized title, that describes
     ///   the purpose of the button's `action`.
-    ///   - delayBetweenActivation: Controls the dealy between the calls to the provided onHold action while the user is holding down the button.
+    ///   - delayBetweenActivation: Controls the delay between the calls to the provided onHold action while the user is holding down the button.
     ///   - action: An action to perform when then button is pressed, or repeated while the User holds down the button.
     public init<S>(
         _ title: S,
@@ -164,7 +169,7 @@ extension PressAndHoldButton where Content == Text {
     /// - Parameters:
     ///   - titleKey: The key for the button's localized title, that describes
     ///   the purpose of the button's `action`.
-    ///   - delayBetweenActivation: Controls the dealy between the calls to the provided onHold action while the user is holding down the button.
+    ///   - delayBetweenActivation: Controls the delay between the calls to the provided onHold action while the user is holding down the button.
     ///   - onTap: An action to perform when the button is tapped and not held.
     ///   - onHold: An action to repeatedly perform while the button is held down.
     public init<S> (
@@ -180,10 +185,14 @@ extension PressAndHoldButton where Content == Text {
     }
 }
 
-@available(iOS 13.0, *)
-@available(macOS 11, *)
-
-
+/// A `ViewModifier` that allows any view to be held down and repeatedly do an action.
+///
+/// You modify a view by providing 1 - 2 action(s) and a label. The action(s) are either
+/// a method or closure property that does something when a User clicks or holds
+/// the `View`. There is also a delayBetweenActivation property that allows the control
+/// of how often th action is to happen while the user is holding the `View` down.
+///
+@available(iOS 13.0, macOS 11, *)
 fileprivate struct OnPressAndHold: ViewModifier {
     
     @State private var isLongPressing: Bool = false
@@ -231,10 +240,15 @@ fileprivate struct OnPressAndHold: ViewModifier {
     }
 }
 
-@available(iOS 13.0, *)
-@available(macOS 11, *)
+@available(iOS 13.0, macOS 11, *)
 public extension View {
     
+    /// Allows this view to be held down and repeatedly do an action.
+    ///
+    /// - Parameters:
+    ///   - delayBetweenActivation: Controls the delay between calls to the provided action while a User is holding down this `View`
+    ///   - action: An action to repeatedly perform while this `View` is held down.
+    ///   - tapAction: An optional action to have when a User simply taps this `View`
     func onPressAndHold(
         delayBetweenActivation delay: Double = 0.25,
         _ action: @escaping () -> Void,
@@ -248,8 +262,7 @@ public extension View {
     }
 }
 
-@available(iOS 13.0, *)
-@available(macOS 11, *)
+@available(iOS 13.0, macOS 11, *)
 fileprivate extension Gesture {
     
     static func holdGesture(
