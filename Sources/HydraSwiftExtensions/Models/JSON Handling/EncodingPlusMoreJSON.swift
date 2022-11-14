@@ -11,39 +11,18 @@ import Foundation
 extension Encodable {
 	
 	/// Returns An `Optional String` object containing the JSON Encoded version of this object or nil.
-	public var jsonString : String? {
-		
-		if let returnData = try? jsonEncodeAsString() { return returnData }
-		
-		return nil
-	}
+    public var jsonString : String? { try? jsonEncodeAsString() }
 	
 	/// Returns An `Optional Data` object containing the JSON Encoded version of this object or nil.
-	public var jsonData : Data? {
-		
-		if let returnData = try? jsonEncodeAsData() { return returnData }
-		
-		return nil
-	}
-	
+    public var jsonData : Data? { try? jsonEncodeAsData() }
+
 	/// Creates a `Data` object containing the Encoded JSON data from this object.
 	///
 	/// - Throws: Any `Error`s caught during the JSON Encoding.
 	///
 	/// - Returns: The created `Data` object.
 	///
-	public func jsonEncodeAsData() throws -> Data {
-		
-		do {
-			
-			return try JSONEncoder().encode( self )
-		}
-		catch ( let error ) {
-			
-			throw error
-		}
-		
-	}
+    public func jsonEncodeAsData() throws -> Data { try JSONEncoder().encode( self ) }
 	
 	/// Creates a `String` containing the Encoded JSON data from this object.
 	///
@@ -52,20 +31,12 @@ extension Encodable {
 	/// - Returns: The created `String`
 	///
 	public func jsonEncodeAsString() throws -> String {
-		
-		do {
-			let jsonData = try JSONEncoder().encode( self )
-			
-			if let returnString = String( data: jsonData, encoding: .utf8 ) { return returnString }
-			else { throw EncodingErrors.jsonStringEncodingError }
-		}
-		catch( let error ) {
-			throw error
-		}
+        let data = try jsonEncodeAsData()
+        if let finalVal = String(data: data, encoding: .utf8) { return finalVal }
+        throw HydraEndcodingError.unableToConvertDataToString
 	}
 }
 
-enum EncodingErrors : Error {
-	
-	case jsonStringEncodingError
+enum HydraEndcodingError: Error {
+    case unableToConvertDataToString
 }

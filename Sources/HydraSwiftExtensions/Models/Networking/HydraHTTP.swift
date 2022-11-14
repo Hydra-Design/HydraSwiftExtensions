@@ -19,12 +19,8 @@ public enum HydraHTTP {
     ///
     /// - Returns : The given `Codable` objectType created from the given `URL`s `Data`.
     ///
-    static public func getObjectFromUrl< objectType : Codable >( _ url : URL ) async throws -> objectType {
-
-        do {
-            let ( data, _ ) = try await URLSession.shared.data( from: url )
-            return try HydraDecoding.convertJSONData( data )
-            
-        } catch ( let error ) { throw error }
+    public static func getObjectFromURL< Object: Codable >( _ url: URL ) async throws -> Object {
+        let ( data, _ ) = try await URLSession.shared.data( from: url )
+        return try HydraDecoding.convertJSONData( data )
     }
 }
