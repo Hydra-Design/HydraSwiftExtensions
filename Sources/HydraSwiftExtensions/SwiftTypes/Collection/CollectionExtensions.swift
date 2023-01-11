@@ -16,15 +16,12 @@ public extension Collection where Element: Equatable {
     ///
     /// - Version: 1.0
     func indices(matching element: Element) -> [ Self.Index ] {
-        var matchingIndicies = [Self.Index]()
-        
-        for index in self.indices {
-            if self[index] == element {
-                matchingIndicies.append(index)
-            }
-        }
-        
-        return matchingIndicies
+        self.indices.compactMap { self[$0] == element ? $0 : nil }
+    }
+    
+    /// Gets all elements that match a given element.
+    func elements(matching element: Element) -> [Element] {
+        self.compactMap { $0 == element ? $0 : nil }
     }
 }
 
@@ -50,11 +47,7 @@ public extension RangeReplaceableCollection where Element: Equatable {
     
     subscript( _ element: Element ) -> [Element] {
         get {
-            var elements = [Element]()
-            for indicy in self.indices(matching: element) {
-                elements.append(self[indicy])
-            }
-            return elements
+            elements(matching: element)
         }
     }
 }
