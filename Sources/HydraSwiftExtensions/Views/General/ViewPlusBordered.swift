@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(macOS 10.15, iOS 13, *)
-extension View {
+public extension View {
     
     /// Applies a Stroke and Clips this `View` to a `Shape`.
     ///
