@@ -20,7 +20,7 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of the given Object.
 	///
-	static public func convertJSONStringList< Object : Codable >( _ jsonObjects : [ String ] ) throws -> [ Object ] {
+	static public func convertJSONStringList< Object : Decodable >( _ jsonObjects : [ String ] ) throws -> [ Object ] {
         return try jsonObjects.compactMap { jsonObj in
             try Self.convertJSONString( jsonObj )
         }
@@ -37,7 +37,7 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of the given Object.
 	///
-	static public func convertJSONDataList< Object : Codable >( _ jsonObjects : [ Data ] ) throws -> [ Object ] {
+	static public func convertJSONDataList< Object : Decodable >( _ jsonObjects : [ Data ] ) throws -> [ Object ] {
         return try jsonObjects.compactMap { jsonObj in
             try Self.convertJSONData( jsonObj )
         }
@@ -54,7 +54,7 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Strings`.
 	///
-	static public func convertToJSONStringList< Object : Codable >( _ objects : [ Object ] ) -> [ String ] {
+	static public func convertToJSONStringList< Object : Encodable >( _ objects : [ Object ] ) -> [ String ] {
         return objects.compactMap { obj in
             obj.jsonString
         }
@@ -71,7 +71,7 @@ public enum HydraDecoding {
 	/// - Returns:
 	///    An `Array` of JSON `Data` objects.
 	///
-	static public func convertToJSONDataList< Object : Codable >( _ objects : [ Object ] ) -> [ Data ] {
+	static public func convertToJSONDataList< Object : Encodable >( _ objects : [ Object ] ) -> [ Data ] {
         return objects.compactMap { obj in
             obj.jsonData
         }
@@ -88,7 +88,7 @@ public enum HydraDecoding {
 	/// - Returns:
 	///   An `Array` of the given objectType.
 	///
-	static public func convertJSONStringDict< Object : Codable >( _ dict : NSDictionary ) throws -> [ Object ] {
+	static public func convertJSONStringDict< Object : Decodable >( _ dict : NSDictionary ) throws -> [ Object ] {
         return try dict.compactMap { ( _, value ) in
             guard let strVal = value as? String else { throw HydraDecodingError.invalidDictionary }
             return try Self.convertJSONString( strVal )
@@ -106,8 +106,8 @@ public enum HydraDecoding {
 	///  - Returns:
 	///    The given `objectType`
 	///
-	static public func convertJSONData< Object : Codable >( _ objectData : Data ) throws -> Object {
-        try JSONDecoder().decode( Object.self, from: objectData )
+    static public func convertJSONData< Object : Decodable >( _ objectData : Data, using decoder: JSONDecoder = JSONDecoder() ) throws -> Object {
+        try decoder.decode( Object.self, from: objectData )
 	}
 	
 	/// Converts a `String` object into the given `objectType`.
@@ -121,7 +121,7 @@ public enum HydraDecoding {
 	///  - Returns:
 	///    The given `objectType`
 	///
-	static public func convertJSONString< Object : Codable >( _ objectStr : String ) throws -> Object {
+	static public func convertJSONString< Object : Decodable >( _ objectStr : String ) throws -> Object {
         let data = objectStr.data( using: .utf8 ) ?? Data()
         return try JSONDecoder().decode( Object.self, from: data )
 	}
@@ -137,7 +137,7 @@ public enum HydraDecoding {
     /// - Returns:
     ///   The given `Object`
     ///
-    static public func loadAndConvertBundledJSONFile< Object : Codable >( filename: String ) throws -> Object {
+    static public func loadAndConvertBundledJSONFile< Object : Decodable >( filename: String ) throws -> Object {
         
         guard let url = Bundle.main.url( forResource: filename, withExtension: "json" )
         else { throw HydraDecodingError.couldntFindFileNamed( name: filename ) }
