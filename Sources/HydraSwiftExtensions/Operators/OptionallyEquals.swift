@@ -9,5 +9,5 @@ infix operator ?=: AssignmentPrecedence
 
 /// Assigns the lhs value to the rhs value when the rhs value is not nil.
 func ?=<T>(_ lhs: inout T, rhs: T?) {
-    if rhs != nil { lhs = rhs! }
+    if let rhs { lhs = rhs }
 }

@@ -12,7 +12,7 @@ public extension Collection where Element: Equatable {
 
     /// Gets the indices of all items matching the given item.
     ///
-    /// - Returns: An `Array` of matching items.
+    /// - Returns: An `Array` of matching item indices.
     ///
     /// - Version: 1.0
     func indices(matching element: Element) -> [ Self.Index ] {
