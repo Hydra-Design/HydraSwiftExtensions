@@ -20,7 +20,7 @@ extension URLSession {
     /// - Returns : The given `Codable` objectType created from the given `URL`s `Data`.
     ///
     public func object<Object: Decodable>(from url: URL, using decoder: JSONDecoder = JSONDecoder()) async throws -> Object {
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, _) = try await self.data(from: url)
         return try HydraDecoding.convertJSONData(data, using: decoder)
     }
     
@@ -34,7 +34,7 @@ extension URLSession {
     /// - Returns : The given `Codable` objectType created from the given `URLRequest`s `Data`.
     ///
     public func object<Object: Decodable>(for request: URLRequest, using decoder: JSONDecoder = JSONDecoder()) async throws -> Object {
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await self.data(for: request)
         return try HydraDecoding.convertJSONData(data, using: decoder)
     }
 }
