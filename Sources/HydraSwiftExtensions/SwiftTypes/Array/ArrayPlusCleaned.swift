@@ -14,24 +14,24 @@ public extension Array where Element : Equatable {
     /// - Returns: An `Array` with only unique items.
     /// - Version: Beta 0.2
     func cleaned() -> [Element] {
-        
-        var cleanArray = [Element]()
-
-        self.forEach { item in
-            if !cleanArray.contains( item ) {
-                cleanArray.append( item )
+        var seen = [Element]()
+        return self.filter { element in
+            if seen.contains(element) {
+                return false
+            } else {
+                seen.append(element)
+                return true
             }
         }
-        return cleanArray
     }
     
     /// Removes duplicate items from this `Array`.
     ///
-    /// - Returns: An `Array` of all the objects removed from the given `Array`.
+    /// - Returns: An `Array` of all the duplicate objects removed from the given `Array`.
     /// - Version: Beta 0.2
     @discardableResult
     mutating func clean() -> [Element] {
-        
+
         var cleanArray = [Element]()
         var dirtyItems = [Element]()
         

@@ -13,7 +13,7 @@ public extension Dictionary where Key == String, Value == Any {
     ///
     /// - Version: Beta 0.1
     ///
-    init( reflecting object : Any ) {
+    init<T>( reflecting object : T ) {
         
         let mirror = Mirror(reflecting: object)
         var dict = [ String : Any ]()
