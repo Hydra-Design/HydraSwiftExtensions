@@ -14,9 +14,6 @@ extension Collection {
     /// - Parameters:
     ///   - predicate: A closure that takes an element as its argument and returns a `Bool` that indicates whether the passed element represents a match.
     ///
-    /// - Returns:
-    ///   The index of the last element for which the predicate returns true. If no elements in the collection satisfy the given predicate, returns nil.
-    ///
     func lastIndex(where predicate: (Element) -> Bool) -> Index? {
         for index in self.indices.reversed() {
             if predicate(self[index]) {
@@ -33,10 +30,7 @@ extension Collection where Element: Equatable {
     ///
     /// - Parameters:
     ///   - predicate: A closure that takes an element as its argument and returns a `Bool` that indicates whether the passed element represents a match.
-    ///
-    /// - Returns:
-    ///   The index of the last element for which the predicate returns true. If no elements in the collection satisfy the given predicate, returns nil.
-    ///
+    ///   
     func lastIndex(of element: Element) -> Index? {
         lastIndex(where: { $0 == element })
     }

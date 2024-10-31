@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CharacterSet: ExpressibleByStringLiteral {
+extension CharacterSet: @retroactive ExpressibleByStringLiteral {
     public init(stringLiteral value: StringLiteralType) {
         self = .init(charactersIn: value)
     }
