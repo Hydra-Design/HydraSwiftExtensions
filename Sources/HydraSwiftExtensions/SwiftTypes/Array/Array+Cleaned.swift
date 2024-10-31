@@ -12,7 +12,6 @@ public extension Array where Element : Equatable {
     /// Returns this `Array` with all duplicate items removed.
     ///
     /// - Returns: An `Array` with only unique items.
-    /// - Version: Beta 0.2
     func cleaned() -> [Element] {
         var seen = [Element]()
         return self.filter { element in
@@ -28,7 +27,6 @@ public extension Array where Element : Equatable {
     /// Removes duplicate items from this `Array`.
     ///
     /// - Returns: An `Array` of all the duplicate objects removed from the given `Array`.
-    /// - Version: Beta 0.2
     @discardableResult
     mutating func clean() -> [Element] {
 

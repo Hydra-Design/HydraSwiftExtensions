@@ -8,6 +8,6 @@
 infix operator ?=: AssignmentPrecedence
 
 /// Assigns the lhs value to the rhs value when the rhs value is not nil.
-func ?=<T>(_ lhs: inout T, rhs: T?) {
+public func ?=<T>(_ lhs: inout T, rhs: T?) {
     if let rhs { lhs = rhs }
 }
